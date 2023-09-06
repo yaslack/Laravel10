@@ -1,0 +1,149 @@
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@600&display=swap');
+
+.grab-bing {
+  cursor : -webkit-grab;
+  cursor : -moz-grab;
+  cursor : -o-grab;
+  cursor : grab;
+}
+
+ /* Hide scrollbar for Chrome, Safari and Opera */
+ .grab-bing::-webkit-scrollbar {
+  display: none;
+}
+
+#stick-top{
+  margin: 0 auto;
+  text-align: center;
+  width: 100%;
+  opacity: 1;
+  background-color: #ca1f56;
+  transition: 0.5s !important;
+
+}
+
+
+#stick-bottom{
+  margin: 0 auto;
+  transition: 0.5s !important;
+  justify-content: center;
+  
+}
+
+#calendar, #modal, #event{
+  transition: all 0.15s;
+  border: 10px solid;
+  border-color: transparent;
+  border-width: 0px;
+  border-radius: 30px;
+  max-width: 5%;
+  width: fit-content;
+  background-color: transparent;
+}
+
+#calendar:hover, #modal:hover, #event:hover{
+  scale: 130%;
+  background-color: white;
+  border: 10px solid transparent;
+  border-radius: 30px;
+  border-width: 10px;
+  cursor: pointer;
+}
+
+
+#stick-top:hover{
+  opacity: 1 !important;
+  
+  #TodayDate, #Date{
+    text-decoration: underline;
+  }
+  
+}
+
+#stick-bottom:hover{
+  opacity: 1 !important;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.grab-bing {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+  background: linear-gradient(#e57e7e 5%, #e66465 70%, #ca1f56 150%);
+  transition: 0.5s;
+} 
+
+.grab-bing:hover{
+  scale: 105%;
+  #stick-top,#stick-bottom{
+    opacity: 0.5;
+  }
+  
+}
+
+.grab-bing > div{
+  font-family: 'Quicksand', sans-serif;
+  color: white;
+}
+
+.grab-bing:active {
+  scale: 105%;
+  cursor : -webkit-grabbing;
+  cursor : -moz-grabbing;
+  cursor : -o-grabbing;
+  cursor : grabbing;
+  #stick-top,#stick-bottom{
+    opacity: 0.5 !important;
+  }
+}
+
+.grab-bing > div:not(#stick-top,#TodayDate, #Date,#stick-bottom){
+  -webkit-user-select: none;
+  user-select: none;
+  padding: 5%;
+}
+#stick-top{
+  padding: 1%;
+}
+
+
+
+.grab-bing > div:hover:not(#stick-top,#TodayDate, #Date,#stick-bottom){
+  transition: all 0.3s;
+  background-color: white;
+  color: black;
+}
+
+#event-list > div > a{
+  transition: all 0.15s;
+}
+
+#event-list > div > a:hover {
+  text-shadow: 3px 2px 5px rgba(0, 0, 0, 0.466);
+  font-size: 115%;
+  cursor: pointer;
+}
+/* size*/
+
+
+
+.grab-bing{
+  width: 70%;
+  height: 90%;
+}
+
+
+@media (max-width:768px)  { /* smartphones, portrait iPhone, portrait 480x320 phones (Android) */ 
+  .grab-bing{
+    width: 70%;
+    height: 90%;
+  }
+  #calendar, #modal, #event{
+    max-width: 10%;
+  }
+  #calendar:hover, #modal:hover, #event:hover{
+    border-width: 7px;
+  }
+  
+}
+/* size*/
+

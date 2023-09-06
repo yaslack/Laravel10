@@ -21,6 +21,11 @@
         "vue": "^3.2.31"
     },
     "dependencies": {
-        "moment": "^2.29.4"
+        "@vuepic/vue-datepicker": "^6.0.3",
+        "jquery": "^3.7.1",
+        "jquery-ui-bundle": "^1.12.1-migrate",
+        "jquery-ui-dist": "^1.13.2",
+        "moment": "^2.29.4",
+        "vue-dragscroll": "^4.0.5"
     }
 }
