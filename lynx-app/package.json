@@ -21,7 +21,6 @@
         "vue": "^3.2.31"
     },
     "dependencies": {
-        "@vuepic/vue-datepicker": "^6.0.3",
         "jquery": "^3.7.1",
         "jquery-ui-bundle": "^1.12.1-migrate",
         "jquery-ui-dist": "^1.13.2",

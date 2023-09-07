@@ -1,18 +1,7 @@
 <script setup>
 import { computed,ref, onMounted } from 'vue';
 import { Link } from '@inertiajs/vue3';
-import VueDatePicker from '@vuepic/vue-datepicker';
-import '@vuepic/vue-datepicker/dist/main.css'
-
-
-const date = ref();
-
-// For demo purposes assign range from the current date
-onMounted(() => {
-  const startDate = new Date();
-  const endDate = new Date(new Date().setDate(startDate.getDate() + 7));
-  date.value = [startDate, endDate];
-})
+import dateRangePicker from './dateRangePicker.vue';
 
 </script>
 
@@ -39,8 +28,8 @@ onMounted(() => {
                 <h3>Desciption</h3>
                 <textarea id="message" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-100 dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here..."></textarea>            </div>
                 <div >
-                    <span class="mx-4 text-gray-500">De</span>
-                    <VueDatePicker v-model="date" range />
+                    <span class="mx-4 text-gray-500">Date</span>
+                    <dateRangePicker/>
             </div>
         </div>
     </div>
@@ -60,6 +49,7 @@ onMounted(() => {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    
 }
 
 .overlay{
@@ -78,6 +68,7 @@ onMounted(() => {
     padding: 50px;
     position: fixed;
     top: 15%;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
 }
 
 #btn-modal{

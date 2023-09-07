@@ -1,16 +1,6 @@
 <script setup>
 import { Head, Link } from '@inertiajs/vue3';
-import moment from "moment/dist/moment"
-import fr from "moment/dist/locale/fr";
-
 import Modal from "../Components/Modale.vue"
-
-
-
-moment.updateLocale('fr', fr);
-
-var date = moment(new Date()).format('dddd D MMMM, YYYY \u00A0 HH:mm'); // Utilisez \u00A0 pour représenter l'espace insécable
-
 
 
 </script>
