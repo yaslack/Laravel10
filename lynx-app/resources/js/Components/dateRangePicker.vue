@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 
 
 import moment from "moment/dist/moment"
@@ -14,7 +14,7 @@ moment.updateLocale('fr', fr);
 var date = moment(new Date()).format('dddd D MMMM, YYYY \u00A0 HH:mm'); // Utilisez \u00A0 pour représenter l'espace insécable
 
 
-var showCalendar = ref(true);
+var showCalendar = ref(false);
 
 const minus = "minus";
 const plus = "plus";

@@ -2,14 +2,17 @@
 import { computed,ref, onMounted } from 'vue';
 import { Link } from '@inertiajs/vue3';
 import dateRangePicker from './dateRangePicker.vue';
+import { showing } from "../store/store.js";
+
+
 
 </script>
 
 <template>
-    <div id="modal-form" class="overfloaw-y-auto">
+    <div v-show="showing" id="modal-form" class="overfloaw-y-auto">
         <div class="overlay"></div>
         <div class="modal">
-            <button id="btn-modal" type="button" class="bg-red-900 rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
+            <button @click="showing =! showing" id="btn-modal" type="button" class="bg-red-900 rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
                 <span class="sr-only">Close menu</span>
                 <!-- Heroicon name: outline/x -->
                 <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -49,7 +52,6 @@ import dateRangePicker from './dateRangePicker.vue';
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    
 }
 
 .overlay{
@@ -67,7 +69,8 @@ import dateRangePicker from './dateRangePicker.vue';
     color: rgb(32, 32, 32);
     padding: 50px;
     position: fixed;
-    top: 15%;
+    top: 25%;
+    scale: 100%;
     box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
 }
 

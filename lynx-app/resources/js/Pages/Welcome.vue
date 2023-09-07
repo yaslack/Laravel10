@@ -1,7 +1,24 @@
 <script setup>
 import { Head, Link } from '@inertiajs/vue3';
-import Modal from "../Components/Modale.vue"
+import Modal from "../Components/Modale.vue";
+import { showing } from "../store/store.js"
+import { ref } from 'vue';
 
+const toggelModal = () => {
+  // Update the value of the importedShowing ref
+  console.log(showing.value)
+  showing.value = !showing.value;
+};
+
+const isActiveEvent = ref(false);
+const isActiveModal = ref(false);
+const isActiveCalendar = ref(false);
+
+function toggleActive(element) {
+  console.log(element)
+  element = !element; // Toggle the active state
+  return element;
+}
 
 </script>
 
@@ -52,14 +69,14 @@ import Modal from "../Components/Modale.vue"
             
             
             <div id="stick-bottom" class="sticky bottom-0 flex items-stretch pb-3 w-full bg-[#ca1f56] pt-2 space-x-8">              
-              <div id="event">
-                <img src="./assets/event.png" alt="Girl in a jacket" width="500" height="600"/> 
+              <div @click="isActiveEvent = toggleActive(isActiveEvent)" :class="{ active: isActiveEvent }" id="event">
+                <img src="./assets/event.png" width="500" height="600"/> 
               </div>
-              <div id="modal">
-                <img src="./assets/plus.png" alt="Girl in a jacket" width="500" height="600"/> 
+              <div @click="toggelModal()" id="modal">
+                <img src="./assets/plus.png"  width="500" height="600"/> 
               </div>
-              <div id="calendar">
-                <img src="./assets/calendar.png" alt="Girl in a jacket" width="500" height="600"/> 
+              <div @click="isActiveCalendar = toggleActive(isActiveCalendar)" :class="{ active: isActiveCalendar }" id="calendar">
+                <img src="./assets/calendar.png"  width="500" height="600"/> 
               </div>
             </div>
             
