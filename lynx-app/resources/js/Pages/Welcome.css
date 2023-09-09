@@ -1,15 +1,23 @@
 @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@600&display=swap');
 
-.grab-bing {
+.Event-element {
   cursor : -webkit-grab;
   cursor : -moz-grab;
   cursor : -o-grab;
   cursor : grab;
+  transition: all 0.5s;
+
+  overflow-x: hidden;
 }
 
  /* Hide scrollbar for Chrome, Safari and Opera */
- .grab-bing::-webkit-scrollbar {
-  display: none;
+ .Event-element::-webkit-scrollbar {
+  background-color: #ca1f56;
+  color: aliceblue;
+ }
+
+.Event-element::-webkit-scrollbar-thumb{
+  background-color: aliceblue;
 }
 
 #stick-top{
@@ -24,9 +32,13 @@
 
 
 #stick-bottom{
+  top: 100%;
   margin: 0 auto;
+  width: fit-content;
   transition: 0.5s !important;
   justify-content: center;
+  width: 100%;
+  
   
 }
 
@@ -65,6 +77,17 @@
   opacity: 1 !important;
 }
 
+.grab-bing{
+  border-radius: 30px !important;
+}
+#stick-top{
+  border-top-left-radius: 30px;
+  border-top-right-radius: 30px;
+}
+#stick-bottom{
+  border-bottom-left-radius: 30px;
+  border-bottom-right-radius: 30px;
+}
 /* Hide scrollbar for IE, Edge and Firefox */
 .grab-bing {
   -ms-overflow-style: none;  /* IE and Edge */
@@ -97,22 +120,11 @@
   }
 }
 
-.grab-bing > div:not(#stick-top,#TodayDate, #Date,#stick-bottom){
-  -webkit-user-select: none;
-  user-select: none;
-  padding: 5%;
-}
 #stick-top{
   padding: 1%;
 }
 
 
-
-.grab-bing > div:hover:not(#stick-top,#TodayDate, #Date,#stick-bottom){
-  transition: all 0.3s;
-  background-color: white;
-  color: black;
-}
 
 #event-list > div > a{
   transition: all 0.15s;
@@ -155,4 +167,48 @@
   border-radius: 30px !important;
   border-width: 10px !important;
   cursor: pointer !important;
+}
+
+
+.Event-element >>> div{
+  -webkit-user-select: none;
+  user-select: none;
+  padding: 5%;
+  transition: all 0.5s;
+  max-height: 10%;
+  overflow: hidden;
+}
+
+.Event-element >>> div:hover{
+  transition: all 0.3s;
+  background-color: white;
+  color: black;
+
+  scale: 110%;
+  max-height: fit-content;
+  word-break: break-word;
+  text-align: center;
+}
+
+.Event-element >>> button{
+  scale: 70%;
+  padding: 3%;
+  background-color: #ca1f56;
+  color: white;
+  border-radius: 20%;
+}
+
+.Event-element >>> button:hover{
+  padding: 3%;
+  background-color: black;
+  color: white;
+}
+
+
+.Event-element >>> #description{
+  padding-top: 5%;
+}
+
+.Event-element >>> #timestamp{
+  padding-top: 5%;
 }

@@ -1,28 +1,42 @@
+<script>
+import { ref } from 'vue';
+import {dateInput} from './dateRangePicker.vue';
+
+export const showFilterModal = ref(false);
+
+export const toggleModalFilter = (value = "") => {
+
+    // Update the value of the importedShowing ref
+    showFilterModal.value = !showFilterModal.value;
+
+
+    if(showFilterModal.value == false && value == "add"){
+
+
+    }
+  };
+
+
+</script>
+
 <script setup>
 import { reactive } from 'vue'
 import { router } from '@inertiajs/vue3'
-import dateRangePicker,{ dateInput } from './dateRangePicker.vue';
-import { showing,toggleModal } from "../store/store.js";
+import dateRangePicker from './dateRangePicker.vue';
 
-const form = reactive({
-    title: null,
-    description: null,
-    date: null,
-  })
 
 
 function checkForm(event) {
-
+    console.log(dateInput.value.placeholder)
     event.preventDefault();
     if(dateInput.value.placeholder == null){
-       alert("Sélectionner une ranger de date");
-
+       router.post('/',{ dateRange: "All" });
+       toggleModalFilter("add");
     }
-    if(/\d/.test(dateInput.value.placeholder.split(' - ')[1]) ){
+    else if(/\d/.test(dateInput.value.placeholder.split(' - ')[1]) ){
         console.log("c bon")
-        form.date = dateInput.value.placeholder;
-        router.post('/posts',form)
-        toggleModal("add");
+        router.post('/',{ dateRange: dateInput.value.placeholder });
+        toggleModalFilter("add");
     }
     else{
         alert("Sélectionner un début et une fin")
@@ -31,13 +45,12 @@ function checkForm(event) {
 }
 
 </script>
-
 <template>
     <Transition name="bounce">
-        <div v-show="showing" id="modal-form" class="overfloaw-y-auto">
+        <div v-show="showFilterModal" id="modal-form" class="overfloaw-y-auto">
             <div class="overlay"></div>
             <form @submit.prevent="checkForm" method="POST" class="modal">
-                <button @click="toggleModal()" id="btn-modal" type="button" class="bg-red-900 rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
+                <button @click="toggleModalFilter()" id="btn-modal" type="button" class="bg-red-900 rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
                     <span class="sr-only">Close menu</span>
                     <!-- Heroicon name: outline/x -->
                     <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -45,30 +58,20 @@ function checkForm(event) {
                     </svg>
                 </button>
                 <div class="text-center">
-                    <h2 class="p-8">Ajout d'évènement</h2>
-                </div>
-                    <div class="line-1"></div>
-                <div class="text-center">
-                    <h3>Titre</h3>
-                    <input v-model="form.title" type="text" id="Titre" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-100 dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Titre" required>
+                    <h2 class="p-8">Filtrage d'évènement</h2>
                 </div>
                 <div class="text-center">
-                    <h3>Desciption</h3>
-                    <textarea v-model="form.description" id="message" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-100 dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here..." required></textarea>            </div>
-                    <div class="text-center" >
-                        <span >Date</span>
                         <dateRangePicker/>
                 </div>
                 <div class="text-center">
                     <button id="submitButton" type="submit" class="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded">
-                    Ajouter
+                        Filtrer
                     </button>
                 </div>
             </form>
         </div>
     </Transition>
 </template>
-
 <style scoped>
 
 #modal-form{

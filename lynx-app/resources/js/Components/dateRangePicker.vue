@@ -1,12 +1,17 @@
+<script>
+import { ref } from 'vue'
+
+export const dateInput = ref("");
+
+export const inputElement = ref();
+
+</script>
+
 <script setup>
 import { ref } from 'vue'
 
-
 import moment from "moment/dist/moment"
 import fr from "moment/dist/locale/fr";
-
-import Modal from "../Components/Modale.vue"
-
 
 
 moment.updateLocale('fr', fr);
@@ -27,9 +32,76 @@ var currentMonth = ref(startDate.month()+1);
 var currentMonthName = ref(startDate.month(startDate.month()).format('MMMM'));
 var currentYear = ref(startDate.year());
 
+const dateSelectedOne = ref("");
+const dateSelectedTwo = ref("");
+const hoverOver = { value: null };
+
+
+
 function toggleCalendar(){
     this.showCalendar =! this.showCalendar;
     generateCalendar(this.currentYear,this.currentMonth);
+    if(dateSelectedOne.value != ""){
+        requestAnimationFrame(() => {
+            colorSelectElement(dateSelectedOne.value,"lightblue");
+        });
+    }
+    if(dateSelectedTwo.value != ""){
+        requestAnimationFrame(() => {
+            colorSelectElement(dateSelectedTwo.value,"lightblue");
+        });
+    }
+
+    requestAnimationFrame(() => { 
+
+const table = document.getElementById('tbody');
+
+table.addEventListener('mouseover', (event) => {
+    
+    if (event.target.tagName  === 'TD') {
+        hoverOver.value = event.target;
+
+        if(dateSelectedOne.value != ""){
+            dateBetweenColor();
+
+        }
+}
+});
+});
+}
+
+
+
+function dateBetweenColor(){
+    const startDateString = dateSelectedOne.value;
+    const endDateString = hoverOver.value.id;
+
+    // Convert the start and end date strings to Moment.js objects
+    const startDate = moment(startDateString, 'DD/MM/YYYY');
+    const endDate = moment(endDateString, 'DD/MM/YYYY');
+
+    const table = document.getElementById('tbody');
+    const tds = table.querySelectorAll('td');
+
+    tds.forEach((td) => {
+    const tdDateString = td.id;
+    const tdDate = moment(tdDateString, 'DD/MM/YYYY');
+
+    if (tdDate.isSame(startDate) || tdDate.isSame(endDate)) {
+        // Skip coloring for start and end dates
+        return;
+    }
+
+    if (tdDate.isSameOrAfter(startDate) && tdDate.isSameOrBefore(endDate)) {
+        // Date falls between the start and end dates (inclusive)
+        if( td.style.backgroundColor != "lightblue")
+            td.style.backgroundColor = 'LightCyan';
+    } else {
+        // Date is outside the range
+        if( td.style.backgroundColor != "lightblue")
+            td.style.backgroundColor = '';
+    }
+    });
 }
 
 function reset(){
@@ -38,6 +110,12 @@ function reset(){
     this.currentMonthName = startDate.month(startDate.month()).format('MMMM');
     this.currentYear = startDate.year();
     this.showCalendar = false;
+    dateSelectedOne.value = "";
+    dateSelectedTwo.value = "";
+    for (var i = 0; i < inputElement.value.length; i++) {
+        inputElement.value[i].placeholder ="Début et Fin";
+        dateInput.value = "";
+    }
 }
 
 function monthSwitch(string){
@@ -61,6 +139,17 @@ function monthSwitch(string){
     }
     this.currentMonthName = startDate.month(this.currentMonth-1).format('MMMM');
     generateCalendar(this.currentYear,this.currentMonth);
+
+    if(dateSelectedOne.value != ""){
+        requestAnimationFrame(() => {
+            colorSelectElement(dateSelectedOne.value,"lightblue");
+        });
+    }
+    if(dateSelectedTwo.value != ""){
+        requestAnimationFrame(() => {
+            colorSelectElement(dateSelectedTwo.value,"lightblue");
+        });
+    }
 }
 
 
@@ -82,62 +171,130 @@ function generateCalendar(cY ,cM) {
         monthlastdate=moment({ tempyear, month: 11 }).endOf('month').date();
     }
     
-calen = "";
-calen+='<tr class="table-row">'
-for (let i=firstDayOfMonth; i > 0; i--) {
-    calen+=`
-    <td class="table-cell text-zinc-400">${monthlastdate - i + 1}</td>
-    `
+    calen = "";
+    calen+='<tr class="table-row">'
+    // loop to add the dates of the prevous month
+    for (let i=firstDayOfMonth; i > 0; i--) {
+        let tempYear = (month == 1) ? (year - 1) : year;
+        let tempMonth = (month == 1) ? 12 : (month - 1);
+        let tempDate = (monthlastdate - i + 1)+"/"+tempMonth+"/"+tempYear;
+        calen+=`
+        <td id="${tempDate}" class="table-cell text-zinc-400">${monthlastdate - i + 1}</td>
+        `
+    }
+    // loop to add the dates of the current month
+    var toLine = firstDayOfMonth;
+    for (let i=1; i <=lastDateOfMonth; i++) {
+        if(toLine == 0){
+            calen+='</tr>'
+            calen+='<tr class="table-row">'
+            toLine = 1;
+        }
+        else{
+            toLine ++;
+            if(toLine == 7){
+                toLine = 0;
+            }
         }
 
 
+        let tempDate = i+"/"+month+"/"+year;
+        calen+=`<td id="${tempDate}" class="table-cell">${i}</td>`;
 
-// loop to add the dates of the current month
-var toLine = firstDayOfMonth;
-for (let i=1; i <=lastDateOfMonth; i++) {
-    if(toLine == 0){
-        calen+='</tr>'
-        calen+='<tr class="table-row">'
-        toLine = 1;
+    }
+
+    if(toLine != 0){
+        for(let i=toLine, j=1 ; i<7 ; i++,j++){
+            let tempYear = (month == 12) ? (year + 1) : year;
+            let tempMonth = (month == 12) ? 1 : (month + 1);
+            let tempDate = j+"/"+tempMonth+"/"+tempYear;
+            calen+=`<td id="${tempDate}" class="table-cell text-zinc-400">${j}</td>`;
+        }
+    }
+    calen +='</tr>'
+
+
+
+}
+
+function isYounger(dateStr1, dateStr2) {
+  // Parse the date strings using Moment.js with the 'D/M/YYYY' format
+  const momentDate1 = moment(dateStr1, 'DD/MM/YYYY');
+  const momentDate2 = moment(dateStr2, 'DD/MM/YYYY');
+
+  // Compare the Moment.js objects
+  if (momentDate1.isBefore(momentDate2)) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+function colorSelectElement(element,color){
+
+    let elem = document.getElementById(element);
+    try{
+
+        elem.style.backgroundColor = color;
+    }
+    catch{
+    }
+}
+
+function selectedDate(element){
+    let selected = element.target.id;
+    inputElement.value = document.querySelectorAll('#input');
+    dateInput.value = inputElement.value;
+
+    colorSelectElement(selected,"lightblue")
+    if(dateSelectedOne.value == "" || isYounger(selected,dateSelectedOne.value) ){
+        colorSelectElement(dateSelectedOne.value,"");
+        dateSelectedOne.value = selected;
+
+        for (var i = 0; i < inputElement.value.length; i++) {
+            inputElement.value[i].placeholder = dateSelectedOne.value + " - " + dateSelectedTwo.value;
+            dateInput.value = inputElement.value[i];
+        }
+
     }
     else{
-        toLine ++;
-        if(toLine == 7){
-            toLine = 0;
+        colorSelectElement(dateSelectedTwo.value,"")
+        dateSelectedTwo.value = selected;
+
+        for (var i = 0; i < inputElement.value.length; i++) {
+            inputElement.value[i].placeholder = dateSelectedOne.value + " - " + dateSelectedTwo.value;
+            dateInput.value = inputElement.value[i];
         }
+
+        //console.log(dateSelectedOne.value + " - "+ dateSelectedTwo.value)
+        const get= document.getElementById('ok');  
+        get.click();  
     }
 
-    // check if the current date is today
-    const isToday = moment().date(1).day() === i ? 'active' : '';
-    calen+=`<td id="${isToday}" class="table-cell">${i}</td>`;
 
 }
 
 
+function effacer(){
+    var clicker= document.getElementById('annuler');
+    clicker.click()
 
-
-if(toLine != 0){
-    for(let i=toLine, j=1 ; i<7 ; i++,j++){
-
-        calen+=`<td class="table-cell text-zinc-400">${j}</td>`;
-    }
-}
-calen +='</tr>'
 
 }
 
-    
 </script>
+
+
 
 <template>
     <div class="block-picker">
-        <input @click="toggleCalendar()"  class="shadow appearance-none border border-grey-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" ref="pickerInput" placeholder="Début et Fin" readonly>
+        <input id="input" @click.prevent="toggleCalendar()"  class="shadow appearance-none border border-grey-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" ref="pickerInput" placeholder="Début et Fin" readonly>
         <Transition>
 
             <div v-if="showCalendar" class="calendar" ref="calendar" >
                 <h3>SELECTIONNER UNE PLAGE DE DATES</h3>
                 <div class="actual-plage">
-                    <h4>Avril 11 - Mai 13</h4>
+                    <h4>{{ dateSelectedOne+" - "+dateSelectedTwo }}</h4>
                     <div>
                         <div class="shown-month-year content-center text-center space-x-[50%]">
                             <span class="fixed-width-span" id="actualMY" >{{ currentMonthName + " " + currentYear }}</span>
@@ -160,16 +317,19 @@ calen +='</tr>'
                                     </tr>
                                 </thead>
                                 
-                                <tbody id="tbody" class="table-row-group" v-html="calen"  >
+                                <tbody @mousedown="selectedDate" id="tbody" class="table-row-group" v-html="calen"  >
 
                                 </tbody>
                             </table>
                         </div>
                         <div class="btn-calendar ">
-                            <button @click="reset()" class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
+                            <button @click.prevent="effacer()" class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
+                                Effacer
+                            </button>   
+                            <button id="annuler" @click.prevent="reset()" class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
                                 Annuler
                             </button>                        
-                            <button @click="toggleCalendar()" class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
+                            <button id="ok" @click.prevent="toggleCalendar()" class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
                                 Ok
                             </button>
                         </div>
@@ -199,7 +359,6 @@ calen +='</tr>'
     color: rgb(55, 55, 55);
     flex: auto;
     position: absolute;
-    height: 80%;
     left: -50%;
     width: 200%;
     background-color: rgb(255, 255, 255);
@@ -208,7 +367,8 @@ calen +='</tr>'
     box-shadow: 0px 0px 5px 2px rgba(0, 0, 0, 0.6);
     user-select: none;
     transition: all 0.5s;
-
+    height: fit-content;
+    padding: 10%;
 }
 
 
@@ -230,7 +390,7 @@ calen +='</tr>'
         scale: 70%;
     }
     .calendar:hover{
-        scale: 80%;
+        scale: 70%;
     }
 }
 @media (max-width:410px){
@@ -241,7 +401,12 @@ calen +='</tr>'
         scale: 50%;
     }
 }
+@media (max-height:710px){
+    .calendar{
+        top: 10%
+    }
 
+}
 
 
 .calendar > h3{
@@ -325,6 +490,7 @@ td{
     border-width: 10px;
     border-radius: 30px;
     transition: all 0.5s;
+    
 }
 
 td:hover{

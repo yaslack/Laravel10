@@ -1,8 +1,15 @@
 <?php
 
+namespace App\Http\Controllers;
+
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Models\Event;
+use Illuminate\Http\Request;
+
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -24,12 +31,27 @@ Route::get('/', function () {
     ]);
 });
 
-Route::middleware([
-    'auth:sanctum',
-    config('jetstream.auth_session'),
-    'verified',
-])->group(function () {
-    Route::get('/dashboard', function () {
-        return Inertia::render('Dashboard');
-    })->name('dashboard');
-});
+Route::resource('posts', PostController::class);
+
+Route::get('/', function () {
+    return Inertia::render('Welcome', [
+        'eventList' => Event::all()
+    ]);
+})->name('home');
+
+
+Route::post('/removeEvent', function (Request $request) {
+    // Retrieve the event ID from the request
+    $eventId = $request->input('id');
+
+    // Call the removeEvent method from your controller
+    return app(Event::class)->removeEvent($eventId);
+})->name('removeEvent');
+
+Route::post('/', function (Request $request) {
+    // Retrieve the event ID from the request
+    $eventId = $request->input('dateRange');
+
+    // Call the removeEvent method from your controller
+    return app(PostController::class)->filterEvent($eventId);
+})->name('filterEvent');
