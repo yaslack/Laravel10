@@ -27,7 +27,7 @@ const plus = "plus";
 
 
 
-var startDate = moment().date(1);
+var startDate = ref(moment().date(1));
 var currentMonth = ref(startDate.month()+1);
 var currentMonthName = ref(startDate.month(startDate.month()).format('MMMM'));
 var currentYear = ref(startDate.year());
@@ -39,8 +39,8 @@ const hoverOver = { value: null };
 
 
 function toggleCalendar(){
-    this.showCalendar =! this.showCalendar;
-    generateCalendar(this.currentYear,this.currentMonth);
+    showCalendar.value =! showCalendar.value;
+    generateCalendar(currentYear.value,currentMonth.value);
     if(dateSelectedOne.value != ""){
         requestAnimationFrame(() => {
             colorSelectElement(dateSelectedOne.value,"lightblue");
@@ -105,11 +105,11 @@ function dateBetweenColor(){
 }
 
 function reset(){
-    this.startDate = moment().date(1);
-    this.currentMonth = startDate.month()+1;
-    this.currentMonthName = startDate.month(startDate.month()).format('MMMM');
-    this.currentYear = startDate.year();
-    this.showCalendar = false;
+    startDate.value = moment().date(1);
+    currentMonth.value = startDate.month()+1;
+    currentMonthName.value = startDate.month(startDate.month()).format('MMMM');
+    currentYear.value = startDate.year();
+    showCalendar.value = false;
     dateSelectedOne.value = "";
     dateSelectedTwo.value = "";
     for (var i = 0; i < inputElement.value.length; i++) {
@@ -120,25 +120,25 @@ function reset(){
 
 function monthSwitch(string){
     if(string === "minus"){
-        if(this.currentMonth == 1){
-            this.currentMonth = 12;
-            this.currentYear -= 1;
+        if(currentMonth.value == 1){
+            currentMonth.value = 12;
+            currentYear.value -= 1;
         }
         else{
-            this.currentMonth -= 1;
+            currentMonth.value -= 1;
         }
     }
     else if (string === "plus"){
-        if(this.currentMonth == 12){
-            this.currentMonth = 1;
-            this.currentYear +=1;
+        if(currentMonth.value == 12){
+            currentMonth.value = 1;
+            currentYear.value +=1;
         }
         else{
-            this.currentMonth += 1;
+            currentMonth.value += 1;
         }
     }
-    this.currentMonthName = startDate.month(this.currentMonth-1).format('MMMM');
-    generateCalendar(this.currentYear,this.currentMonth);
+    currentMonthName.value = startDate.month(currentMonth.value-1).format('MMMM');
+    generateCalendar(currentYear.value,currentMonth.value);
 
     if(dateSelectedOne.value != ""){
         requestAnimationFrame(() => {
