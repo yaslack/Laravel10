@@ -28,9 +28,9 @@ const plus = "plus";
 
 
 var startDate = ref(moment().date(1));
-var currentMonth = ref(startDate.month()+1);
-var currentMonthName = ref(startDate.month(startDate.month()).format('MMMM'));
-var currentYear = ref(startDate.year());
+var currentMonth = ref(startDate.value.month()+1);
+var currentMonthName = ref(startDate.value.month(startDate.value.month()).format('MMMM'));
+var currentYear = ref(startDate.value.year());
 
 const dateSelectedOne = ref("");
 const dateSelectedTwo = ref("");
