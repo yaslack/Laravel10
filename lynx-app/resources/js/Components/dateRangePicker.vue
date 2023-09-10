@@ -137,7 +137,7 @@ function monthSwitch(string){
             currentMonth.value += 1;
         }
     }
-    currentMonthName.value = startDate.month(currentMonth.value-1).format('MMMM');
+    currentMonthName.value = startDate.value.month(currentMonth.value-1).format('MMMM');
     generateCalendar(currentYear.value,currentMonth.value);
 
     if(dateSelectedOne.value != ""){
