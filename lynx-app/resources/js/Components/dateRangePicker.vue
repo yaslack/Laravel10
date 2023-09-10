@@ -106,9 +106,9 @@ function dateBetweenColor(){
 
 function reset(){
     startDate.value = moment().date(1);
-    currentMonth.value = startDate.month()+1;
-    currentMonthName.value = startDate.month(startDate.month()).format('MMMM');
-    currentYear.value = startDate.year();
+    currentMonth.value = startDate.value.month()+1;
+    currentMonthName.value = startDate.value.month(startDate.value.month()).format('MMMM');
+    currentYear.value = startDate.value.year();
     showCalendar.value = false;
     dateSelectedOne.value = "";
     dateSelectedTwo.value = "";
